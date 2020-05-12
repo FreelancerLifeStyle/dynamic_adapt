@@ -116,13 +116,13 @@
 			if (a.place > b.place) { return 1 } else { return -1 }
 		});
 	}
-	//Слушаем изменение размера экрана
-	window.addEventListener('resize', function (event) {
-		dynamic_adapt();
-	});
 	//Дополнительные сценарии адаптации
 	function custom_adapt(body_width) {
 
 	}
+	//Слушаем изменение размера экрана
+	window.addEventListener('resize', function (event) {
+		dynamic_adapt();
+	});
 }());
 
