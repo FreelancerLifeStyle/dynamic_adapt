@@ -17,23 +17,22 @@
 		for (let index = 0; index < daElements.length; index++) {
 			const daElement = daElements[index];
 			const daMove = daElement.getAttribute('data-da');
-			const daArray = daMove.split(',');
-			if (daArray.length == 3) {
-				daElement.setAttribute('data-da-index', number);
-				//Заполняем массив первоначальных позиций
-				originalPositions[number] = {
-					"parent": daElement.parentNode,
-					"index": indexInParent(daElement)
-				};
-				//Заполняем массив элементов 
-				daElementsArray[number] = {
-					"element": daElement,
-					"destination": document.querySelector('.' + daArray[0].trim()),
-					"place": daArray[1].trim(),
-					"breakpoint": daArray[2].trim()
-				}
-				number++;
+			const daPlace = daElement.hasAttribute('data-da-position') ? daElement.getAttribute('data-da-position') : 'last' ;
+			const daResolutionBreakpoint = daElement.hasAttribute('data-da-resolution') ? daElement.getAttribute('data-da-resolution') : 768;
+			daElement.setAttribute('data-da-index', number);
+			//Заполняем массив первоначальных позиций
+			originalPositions[number] = {
+				"parent": daElement.parentNode,
+				"index": indexInParent(daElement)
+			};
+			//Заполняем массив элементов
+			daElementsArray[number] = {
+				"element": daElement,
+				"destination": document.querySelector('.' + daMove),
+				"place": daPlace,
+				"breakpoint": daResolutionBreakpoint
 			}
+			number++;
 		}
 		dynamicAdaptSort(daElementsArray);
 
@@ -97,7 +96,7 @@
 		var children = Array.prototype.slice.call(el.parentNode.children);
 		return children.indexOf(el);
 	}
-	//Функция получения массива индексов элементов внутри родителя 
+	//Функция получения массива индексов элементов внутри родителя
 	function indexOfElements(parent, back) {
 		const children = parent.children;
 		const childrenArray = [];
