@@ -18,7 +18,7 @@
 			const daElement = daElements[index];
 			const daMove = daElement.getAttribute('data-da');
 			const daArray = daMove.split(',');
-			if (daArray.length == 3) {
+			if (daArray.length === 3) {
 				daElement.setAttribute('data-da-index', number);
 				//Заполняем массив первоначальных позиций
 				originalPositions[number] = {
@@ -61,9 +61,9 @@
 				//Перебрасываем элементы
 				if (!daElement.classList.contains(daClassname)) {
 					let actualIndex = indexOfElements(daDestination)[daPlace];
-					if (daPlace == 'first') {
+					if (daPlace === 'first') {
 						actualIndex = indexOfElements(daDestination)[0];
-					} else if (daPlace == 'last') {
+					} else if (daPlace === 'last') {
 						actualIndex = indexOfElements(daDestination)[indexOfElements(daDestination).length];
 					}
 					daDestination.insertBefore(daElement, daDestination.children[actualIndex]);
