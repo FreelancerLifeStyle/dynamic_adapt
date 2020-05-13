@@ -18,7 +18,9 @@
 			const daElement = daElements[index];
 			const daMove = daElement.getAttribute('data-da');
 			const daArray = daMove.split(',');
-			if (daArray.length === 3) {
+			const daPlace = daArray[1] ? daArray[1].trim() : 'last';
+			const daBreakpoint = daArray[2] ? daArray[2].trim() : '767';
+			if (daArray.length > 0) {
 				daElement.setAttribute('data-da-index', number);
 				//Заполняем массив первоначальных позиций
 				originalPositions[number] = {
@@ -29,8 +31,8 @@
 				daElementsArray[number] = {
 					"element": daElement,
 					"destination": document.querySelector('.' + daArray[0].trim()),
-					"place": daArray[1].trim(),
-					"breakpoint": daArray[2].trim()
+					"place": daPlace,
+					"breakpoint": daBreakpoint
 				}
 				number++;
 			}
