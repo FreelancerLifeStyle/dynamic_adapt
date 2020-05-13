@@ -129,15 +129,32 @@
 		const viewport_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 	}
 
-	//Слушаем изменение размера экрана
-	window.addEventListener('resize', function (event) {
-
-	});
-
-	let block = document.querySelector('.block__item_1');
+	let block = document.querySelector('.click');
 	block.addEventListener("click", function (e) {
-		alert('000');
+		alert('Все ок ;)');
 	});
 }());
 
 
+/*
+//Объявляем переменные
+const parent_original = document.querySelector('.content__blocks_city');
+const parent = document.querySelector('.content__column_river');
+const item = document.querySelector('.content__block_item');
+
+//Слушаем изменение размера экрана
+window.addEventListener('resize', function (event) {
+	const viewport_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+	if (viewport_width <= 992) {
+		if (!item.classList.contains('done')) {
+			parent.insertBefore(item, parent.children[2]);
+			item.classList.add('done');
+		}
+	} else {
+		if (item.classList.contains('done')) {
+			parent_original.insertBefore(item, parent_original.children[2]);
+			item.classList.remove('done');
+		}
+	}
+});
+*/

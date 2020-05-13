@@ -8,18 +8,36 @@
 	</head>
 	<body>
 		<div class="wrapper">
-			<div class="block">
-				<div class="section__item">Item</div>
-				<div data-da="section,first,768" class="block__item block__item_1">1</div>
-				<div class="section__item">Item</div>
-				<div data-da="section,last,1280" class="block__item">2</div>
-				<div data-da="section,1,1280" class="block__item">3</div>
-			</div>
-			<div class="section">
-				<div class="section__item">Item</div>
-				<div class="section__item">Item</div>
-				<div class="section__item item">Item</div>
-			</div>
+			<header class="header">
+				<div class="header__logo">Динамический адаптив</div>
+			</header>
+			<main class="content">
+				<section class="content__section">
+					<h2 class="content__title">Я Город</h2>
+					<div class="content__blocks content__blocks_city">
+						<div data-da="content__column_garden,1,992" class="content__block content__block_1">Я Коля</div>
+						<div data-da="content__column_garden,1,992" class="content__block content__block_2 click">Я Аня</div>
+						<div data-da="content__column_river,last,1280" class="content__block content__block_item content__block_3">Я Ваня</div>
+					</div>
+				</section>
+				<section class="content__section">
+					<h2 class="content__title">Я бабушка</h2>
+					<div class="content__row">
+						<div class="content__column content__column_garden">
+							<h3 class="content__title">Я огород</h3>
+							<div class="content__block content__block_2">Я Лоцы</div>
+						</div>
+						<div class="content__column content__column_river">
+							<h3 class="content__title">Я речка</h3>
+							<div class="content__block content__block_3">Я Оля</div>
+							<!-- <div class="content__block content__block_new-item content__block_3">Я Ваня</div> -->
+						</div>
+					</div>
+				</section>
+			</main>
+			<footer class="footer">
+				<div class="footer__text">Я в подвале :(</div>
+			</footer>
 		</div>
 		<script src="script.js"></script>
 	</body>
