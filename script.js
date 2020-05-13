@@ -63,7 +63,7 @@
 					let actualIndex = indexOfElements(daDestination)[daPlace];
 					if (daPlace == 'first') {
 						actualIndex = indexOfElements(daDestination)[0];
-					} else (daPlace == 'last') {
+					} else if (daPlace == 'last') {
 						actualIndex = indexOfElements(daDestination)[indexOfElements(daDestination).length];
 					}
 					daDestination.insertBefore(daElement, daDestination.children[actualIndex]);
