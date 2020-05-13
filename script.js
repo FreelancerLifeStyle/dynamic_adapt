@@ -37,7 +37,7 @@
 		}
 		dynamicAdaptSort(daElementsArray);
 
-		//Создаем события в точке брейпоинта
+		//Создаем события в точке брейкпоинта
 		for (let index = 0; index < daElementsArray.length; index++) {
 			const el = daElementsArray[index];
 			const daBreakpoint = el.breakpoint;
@@ -127,14 +127,14 @@
 	function customAdapt() {
 		const viewport_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 	}
-	/*
-	let block = document.querySelector('.click');
-	block.addEventListener("click", function (e) {
-		alert('Все ок ;)');
-	});
-	*/
 }());
 
+/*
+let block = document.querySelector('.click');
+block.addEventListener("click", function (e) {
+	alert('Все ок ;)');
+});
+*/
 
 /*
 //Объявляем переменные
@@ -143,7 +143,10 @@ const parent = document.querySelector('.content__column_river');
 const item = document.querySelector('.content__block_item');
 
 //Слушаем изменение размера экрана
-window.addEventListener('resize', function (event) {
+window.addEventListener('resize', move);
+
+//Функция
+function move(){
 	const viewport_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 	if (viewport_width <= 992) {
 		if (!item.classList.contains('done')) {
@@ -156,5 +159,9 @@ window.addEventListener('resize', function (event) {
 			item.classList.remove('done');
 		}
 	}
-});
+}
+
+//Вызываем функцию
+move();
+
 */
