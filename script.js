@@ -8,7 +8,7 @@
 	let original_positions = [];
 	let da_elements = document.querySelectorAll('[data-da]');
 	let da_elements_array = [];
-	let da_matchmedia = [];
+	let da_match_media = [];
 	//Заполняем массивы
 	if (da_elements.length > 0) {
 		let number = 0;
@@ -41,8 +41,8 @@
 			const da_breakpoint = el.breakpoint;
 			const da_type = "max"; //Для MobileFirst поменять на min
 
-			da_matchmedia.push(window.matchMedia("(" + da_type + "-width: " + da_breakpoint + "px)"));
-			da_matchmedia[index].addListener(dynamic_adapt);
+			da_match_media.push(window.matchMedia("(" + da_type + "-width: " + da_breakpoint + "px)"));
+			da_match_media[index].addListener(dynamic_adapt);
 
 		}
 	}
@@ -56,7 +56,7 @@
 			const da_breakpoint = el.breakpoint;
 			const da_classname = "_dynamic_adapt_" + da_breakpoint;
 
-			if (da_matchmedia[index].matches) {
+			if (da_match_media[index].matches) {
 				//Перебрасываем элементы
 				if (!da_element.classList.contains(da_classname)) {
 					let actual_index;
