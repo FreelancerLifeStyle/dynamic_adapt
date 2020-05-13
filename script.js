@@ -60,13 +60,11 @@
 			if (daMatchMedia[index].matches) {
 				//Перебрасываем элементы
 				if (!daElement.classList.contains(daClassname)) {
-					let actualIndex;
+					let actualIndex = indexOfElements(daDestination)[daPlace];
 					if (daPlace == 'first') {
 						actualIndex = indexOfElements(daDestination)[0];
-					} else if (daPlace == 'last') {
+					} else (daPlace == 'last') {
 						actualIndex = indexOfElements(daDestination)[indexOfElements(daDestination).length];
-					} else {
-						actualIndex = indexOfElements(daDestination)[daPlace];
 					}
 					daDestination.insertBefore(daElement, daDestination.children[actualIndex]);
 					daElement.classList.add(daClassname);
