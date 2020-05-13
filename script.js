@@ -128,11 +128,12 @@
 	function custom_adapt() {
 		const viewport_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 	}
-
+	/*
 	let block = document.querySelector('.click');
 	block.addEventListener("click", function (e) {
 		alert('Все ок ;)');
 	});
+	*/
 }());
 
 
