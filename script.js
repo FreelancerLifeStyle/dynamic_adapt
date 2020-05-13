@@ -8,6 +8,7 @@
 	let original_positions = [];
 	let da_elements = document.querySelectorAll('[data-da]');
 	let da_elements_array = [];
+	let da_matchmedia = [];
 	//Заполняем массивы
 	if (da_elements.length > 0) {
 		let number = 0;
@@ -33,11 +34,20 @@
 			}
 		}
 		dynamic_adapt_sort(da_elements_array);
-		dynamic_adapt();
+
+		//Создаем события в точке брейпоинта
+		for (let index = 0; index < da_elements_array.length; index++) {
+			const el = da_elements_array[index];
+			const da_breakpoint = el.breakpoint;
+			const da_type = "max"; //Для MobileFirst поменять на min
+
+			da_matchmedia.push(window.matchMedia("(" + da_type + "-width: " + da_breakpoint + "px)"));
+			da_matchmedia[index].addListener(dynamic_adapt);
+
+		}
 	}
 	//Основная функция
-	function dynamic_adapt() {
-		let body_width = document.querySelector('body').offsetWidth;
+	function dynamic_adapt(e) {
 		for (let index = 0; index < da_elements_array.length; index++) {
 			const el = da_elements_array[index];
 			const da_element = el.element;
@@ -45,7 +55,8 @@
 			const da_place = el.place;
 			const da_breakpoint = el.breakpoint;
 			const da_classname = "_dynamic_adapt_" + da_breakpoint;
-			if (body_width < da_breakpoint) { //Для MobileFirst поменять на ">"
+
+			if (da_matchmedia[index].matches) {
 				//Перебрасываем элементы
 				if (!da_element.classList.contains(da_classname)) {
 					let actual_index;
@@ -67,8 +78,12 @@
 				}
 			}
 		}
-		custom_adapt(body_width);
+		custom_adapt();
 	}
+
+	//Вызов основной функции
+	dynamic_adapt();
+
 	//Функция возврата на место
 	function dynamic_adapt_back(el) {
 		const da_index = el.getAttribute('data-da-index');
@@ -80,15 +95,8 @@
 	}
 	//Функция получения индекса внутри родителя
 	function index_in_parent(el) {
-		const children = el.parentNode.children;
-		let num = 0;
-		for (let i = 0; i < children.length; i++) {
-			if (children[i] == el) return num;
-			if (children[i].nodeType == 1) {
-				num++;
-			}
-		}
-		return -1;
+		var children = Array.prototype.slice.call(el.parentNode.children);
+		return children.indexOf(el);
 	}
 	//Функция получения массива индексов элементов внутри родителя 
 	function index_of_elements(parent, back) {
@@ -117,12 +125,19 @@
 		});
 	}
 	//Дополнительные сценарии адаптации
-	function custom_adapt(body_width) {
-
+	function custom_adapt() {
+		const viewport_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 	}
+
 	//Слушаем изменение размера экрана
 	window.addEventListener('resize', function (event) {
-		dynamic_adapt();
+
+	});
+
+	let block = document.querySelector('.block__item_1');
+	block.addEventListener("click", function (e) {
+		alert('000');
 	});
 }());
+
 
