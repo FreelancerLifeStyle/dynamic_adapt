@@ -17,24 +17,27 @@
 		for (let index = 0; index < daElements.length; index++) {
 			const daElement = daElements[index];
 			const daMove = daElement.getAttribute('data-da');
-			const daArray = daMove.split(',');
-			const daPlace = daArray[1] ? daArray[1].trim() : 'last';
-			const daBreakpoint = daArray[2] ? daArray[2].trim() : '767';
-			if (daArray.length > 0) {
-				daElement.setAttribute('data-da-index', number);
-				//Заполняем массив первоначальных позиций
-				originalPositions[number] = {
-					"parent": daElement.parentNode,
-					"index": indexInParent(daElement)
-				};
-				//Заполняем массив элементов 
-				daElementsArray[number] = {
-					"element": daElement,
-					"destination": document.querySelector('.' + daArray[0].trim()),
-					"place": daPlace,
-					"breakpoint": daBreakpoint
+			if (daMove != '') {
+				const daArray = daMove.split(',');
+				const daPlace = daArray[1] ? daArray[1].trim() : 'last';
+				const daBreakpoint = daArray[2] ? daArray[2].trim() : '767';
+				const daDestination = document.querySelector('.' + daArray[0].trim())
+				if (daArray.length > 0 && daDestination) {
+					daElement.setAttribute('data-da-index', number);
+					//Заполняем массив первоначальных позиций
+					originalPositions[number] = {
+						"parent": daElement.parentNode,
+						"index": indexInParent(daElement)
+					};
+					//Заполняем массив элементов 
+					daElementsArray[number] = {
+						"element": daElement,
+						"destination": document.querySelector('.' + daArray[0].trim()),
+						"place": daPlace,
+						"breakpoint": daBreakpoint
+					}
+					number++;
 				}
-				number++;
 			}
 		}
 		dynamicAdaptSort(daElementsArray);
