@@ -21,6 +21,7 @@
 				const daArray = daMove.split(',');
 				const daPlace = daArray[1] ? daArray[1].trim() : 'last';
 				const daBreakpoint = daArray[2] ? daArray[2].trim() : '767';
+				const daType = daArray[3] ? daArray[3].trim() : 'max'; //добавляем тип Media, занчение по умолчанию 'max'
 				const daDestination = document.querySelector('.' + daArray[0].trim())
 				if (daArray.length > 0 && daDestination) {
 					daElement.setAttribute('data-da-index', number);
@@ -29,12 +30,13 @@
 						"parent": daElement.parentNode,
 						"index": indexInParent(daElement)
 					};
-					//Заполняем массив элементов 
+					//Заполняем массив элементов
 					daElementsArray[number] = {
 						"element": daElement,
 						"destination": document.querySelector('.' + daArray[0].trim()),
 						"place": daPlace,
-						"breakpoint": daBreakpoint
+						"breakpoint": daBreakpoint,
+						"type": daType
 					}
 					number++;
 				}
@@ -46,7 +48,8 @@
 		for (let index = 0; index < daElementsArray.length; index++) {
 			const el = daElementsArray[index];
 			const daBreakpoint = el.breakpoint;
-			const daType = "max"; //Для MobileFirst поменять на min
+			//const daType = "max"; //Для MobileFirst поменять на min
+			const daType = el.type;
 
 			daMatchMedia.push(window.matchMedia("(" + daType + "-width: " + daBreakpoint + "px)"));
 			daMatchMedia[index].addListener(dynamicAdapt);
