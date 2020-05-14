@@ -16,7 +16,11 @@ JS функция для комфортной адаптивной верстк�
 
 ## Примеры
 
-`<div data-da="content__column_garden" class="content__block">Я Коля</div>`, `<div data-da="content__column_garden,2" class="content__block">Я Коля</div>`, `<div data-da="content__column_garden,2,992" class="content__block">Я Коля</div>`
+```html
+<div data-da="content__column_garden" class="content__block">Я Коля
+<div data-da="content__column_garden,2" class="content__block">Я Коля
+<div data-da="content__column_garden,2,992" class="content__block">Я Коля
+```
 
 ## Подробнее
 https://www.youtube.com/watch?v=QKuMr575vlQ
