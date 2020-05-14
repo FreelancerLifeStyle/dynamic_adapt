@@ -17,9 +17,9 @@ JS функция для комфортной адаптивной верстк�
 ## Примеры
 
 ```html
-<div data-da="content__column_garden" class="content__block">Я Коля
-<div data-da="content__column_garden,2" class="content__block">Я Коля
-<div data-da="content__column_garden,2,992" class="content__block">Я Коля
+<div data-da="content__column_garden" class="content__block">Я Коля</div>
+<div data-da="content__column_garden,2" class="content__block">Я Коля</div>
+<div data-da="content__column_garden,2,992" class="content__block">Я Коля</div>
 ```
 
 ## Подробнее
