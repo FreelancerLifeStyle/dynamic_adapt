@@ -21,7 +21,7 @@
 				const daArray = daMove.split(',');
 				const daPlace = daArray[1] ? daArray[1].trim() : 'last';
 				const daBreakpoint = daArray[2] ? daArray[2].trim() : '767';
-				const daType = daArray[3] ? daArray[3].trim() : 'max'; //добавляем тип Media, занчение по умолчанию 'max'
+				const daType = daArray[3] === 'min' ? daArray[3].trim() : 'max'; //добавляем тип Media, занчение по умолчанию 'max'
 				const daDestination = document.querySelector('.' + daArray[0].trim())
 				if (daArray.length > 0 && daDestination) {
 					daElement.setAttribute('data-da-index', number);
