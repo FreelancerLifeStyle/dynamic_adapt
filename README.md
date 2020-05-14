@@ -16,7 +16,7 @@ JS функция для комфортной адаптивной верстк�
 
 ## Примеры
 
-`data-da="class_name,2,992"`, `data-da="class_name"`, `data-da="class_name,2"`
+`<div data-da="content__column_garden" class="content__block">Я Коля</div>`, `<div data-da="content__column_garden,2" class="content__block">Я Коля</div>`, `<div data-da="content__column_garden,2,992" class="content__block">Я Коля</div>`
 
 
 ## Спасибо за идеи и предложения
