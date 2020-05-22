@@ -21,6 +21,7 @@
 				const daArray = daMove.split(',');
 				const daPlace = daArray[1] ? daArray[1].trim() : 'last';
 				const daBreakpoint = daArray[2] ? daArray[2].trim() : '767';
+				const daType = daArray[3] === 'min' ? daArray[3].trim() : 'max';
 				const daDestination = document.querySelector('.' + daArray[0].trim())
 				if (daArray.length > 0 && daDestination) {
 					daElement.setAttribute('data-da-index', number);
@@ -34,19 +35,21 @@
 						"element": daElement,
 						"destination": document.querySelector('.' + daArray[0].trim()),
 						"place": daPlace,
-						"breakpoint": daBreakpoint
+						"breakpoint": daBreakpoint,
+						"type": daType
 					}
 					number++;
 				}
 			}
 		}
 		dynamicAdaptSort(daElementsArray);
+		console.log(daElementsArray);
 
 		//Создаем события в точке брейкпоинта
 		for (let index = 0; index < daElementsArray.length; index++) {
 			const el = daElementsArray[index];
 			const daBreakpoint = el.breakpoint;
-			const daType = "max"; //Для MobileFirst поменять на min
+			const daType = el.type;
 
 			daMatchMedia.push(window.matchMedia("(" + daType + "-width: " + daBreakpoint + "px)"));
 			daMatchMedia[index].addListener(dynamicAdapt);
@@ -122,7 +125,7 @@
 	//Сортировка объекта
 	function dynamicAdaptSort(arr) {
 		arr.sort(function (a, b) {
-			if (a.breakpoint > b.breakpoint) { return -1 } else { return 1 } //Для MobileFirst поменять
+			if (a.breakpoint > b.breakpoint) { return -1 } else { return 1 }
 		});
 		arr.sort(function (a, b) {
 			if (a.place > b.place) { return 1 } else { return -1 }
