@@ -43,7 +43,6 @@
 			}
 		}
 		dynamicAdaptSort(daElementsArray);
-		console.log(daElementsArray);
 
 		//Создаем события в точке брейкпоинта
 		for (let index = 0; index < daElementsArray.length; index++) {
@@ -133,7 +132,7 @@
 	}
 	//Дополнительные сценарии адаптации
 	function customAdapt() {
-		const viewport_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+		//const viewport_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 	}
 }());
 
