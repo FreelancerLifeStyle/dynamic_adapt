@@ -98,4 +98,3 @@ mediaArray.forEach((item) => {
   media.addEventListener("change", dynamicAdapt.bind(null, media, breakpoint));
   dynamicAdapt.call(null, media, breakpoint);
 });
-console.log(...mediaArray)
