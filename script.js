@@ -74,7 +74,6 @@ const moveBack = (parent, element, index) => {
   parent.children[index].before(element);
 };
 
-
 // Основная функция
 const mediaHandler = (media, breakpointMeida) => {
   // массив объектов с подходящим брейкпоинтом
