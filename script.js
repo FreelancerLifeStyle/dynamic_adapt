@@ -30,25 +30,23 @@ const dynamicAdaptSort = (arr) => {
   });
 };
 
-if (daElements.length > 0) {
-  daElements.forEach((daElement, id) => {
-    const daData = daElement.dataset.da.trim();
-    if (daData !== '') {
-      const object = {};
-      const daMove = daData.split(',');
-      object.id = id;
-      object.parent = daElement.parentNode;
-      object.element = daElement;
+daElements.forEach((daElement, id) => {
+  const daData = daElement.dataset.da.trim();
+  if (daData !== '') {
+    const object = {};
+    const daMove = daData.split(',');
+    object.id = id;
+    object.parent = daElement.parentNode;
+    object.element = daElement;
 
-      object.destination = document.querySelector(`.${daMove[0].trim()}`);
-      object.breakpoint = daMove[1] ? daMove[1].trim() : '769';
-      object.place = daMove[2] ? daMove[2].trim() : 'last';
-      object.type = daMove[3] ? daMove[3].trim() : 'min';
+    object.destination = document.querySelector(`.${daMove[0].trim()}`);
+    object.breakpoint = daMove[1] ? daMove[1].trim() : '769';
+    object.place = daMove[2] ? daMove[2].trim() : 'last';
+    object.type = daMove[3] ? daMove[3].trim() : 'min';
 
-      daElementsArray.push(object);
-    }
-  });
-}
+    daElementsArray.push(object);
+  }
+});
 
 dynamicAdaptSort(daElementsArray);
 
@@ -89,9 +87,9 @@ mediaArray = daElementsArray
   .map(({ type, breakpoint }) => `(${type}-width: ${breakpoint}px),${breakpoint}`)
   .filter((item, index, self) => self.indexOf(item) === index)
   .forEach((item) => {
-  const arr = item.split(',');
-  const media = window.matchMedia(arr[0]);
-  const breakpoint = arr[1];
-  media.addEventListener('change', dynamicAdapt.bind(null, media, breakpoint));
-  dynamicAdapt.call(null, media, breakpoint);
-});
+    const arr = item.split(',');
+    const media = window.matchMedia(arr[0]);
+    const breakpoint = arr[1];
+    media.addEventListener('change', dynamicAdapt.bind(null, media, breakpoint));
+    dynamicAdapt.call(null, media, breakpoint);
+  });
