@@ -1,44 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="style.css" />
-		<title>Динамический адаптив</title>
-	</head>
-	<body>
-		<div class="wrapper">
-			<header class="header">
-				<div class="header__logo">Динамический адаптив</div>
-			</header>
-			<main class="content">
-				<section class="content__section">
-					<h2 class="content__title">Я Город</h2>
-					<div class="content__blocks content__blocks_city">
-						<div data-da="content__column_garden" class="content__block content__block_1">Я Коля</div>
-						<div data-da="content__column_garden,1,992" class="content__block content__block_2 click">Я Аня</div>
-						<div data-da="content__column_river,last,1280" class="content__block content__block_item content__block_3">Я Ваня</div>
-					</div>
-				</section>
-				<section class="content__section">
-					<h2 class="content__title">Я бабушка</h2>
-					<div class="content__row">
-						<div class="content__column content__column_garden">
-							<h3 class="content__title">Я огород</h3>
-							<div class="content__block content__block_2">Я Лоцы</div>
-						</div>
-						<div class="content__column content__column_river">
-							<h3 class="content__title">Я речка</h3>
-							<div class="content__block content__block_3">Я Оля</div>
-							<!-- <div class="content__block content__block_new-item content__block_3">Я Ваня</div> -->
-						</div>
-					</div>
-				</section>
-			</main>
-			<footer class="footer">
-				<div class="footer__text">Я в подвале :(</div>
-			</footer>
-		</div>
-		<script src="script.js"></script>
-	</body>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Динамический адаптив</title>
+</head>
+
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <div class="header__logo">Динамический адаптив</div>
+    </header>
+    <main class="content">
+      <section class="content__section">
+        <h2 class="content__title">Я Город</h2>
+        <div class="content__blocks content__blocks_city">
+          <div data-da="content__column_garden, 800, last, max" class="content__block content__block_1">Я Коля</div>
+          <div data-da="content__column_garden, 900, 1, max" class="content__block content__block_2 click">Я Аня</div>
+          <div data-da="content__column_river, 1200, last, max"
+            class="content__block content__block_item content__block_3">Я Ваня</div>
+        </div>
+      </section>
+      <section class="content__section">
+        <h2 class="content__title">Я бабушка</h2>
+        <div class="content__row">
+          <div class="content__column content__column_garden">
+            <h3 class="content__title">Я огород</h3>
+            <div data-da="content__blocks_city, 700, 3, max" class="content__block content__block_2">Я Лоцы</div>
+          </div>
+          <div class="content__column content__column_river">
+            <h3 class="content__title">Я речка</h3>
+            <div class="content__block content__block_3">Я Оля</div>
+            <!-- <div class="content__block content__block_new-item content__block_3">Я Ваня</div> -->
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="footer__text">Я в подвале :(</div>
+    </footer>
+  </div>
+  <script src="script.js"></script>
+</body>
+
 </html>
