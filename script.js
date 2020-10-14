@@ -22,9 +22,9 @@ class DynamicAdapt {
 				oElement.element = element;
 				oElement.parent = element.parentNode;
 				oElement.destination = document.querySelector(`.${dataArray[0].trim()}`);
-				oElement.breakpoint = dataArray[1] ? dataArray[1].trim() : '769';
+				oElement.breakpoint = dataArray[1] ? dataArray[1].trim() : '767';
 				oElement.place = dataArray[2] ? dataArray[2].trim() : 'last';
-				oElement.type = dataArray[3] ? dataArray[3].trim() : 'min';
+				oElement.type = dataArray[3] ? dataArray[3].trim() : 'max';
 
 				this.elementsArray.push(oElement);
 			}
