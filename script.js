@@ -39,7 +39,6 @@ if (daElements.length > 0) {
       object.id = id;
       object.parent = daElement.parentNode;
       object.element = daElement;
-      object.index = indexInParent(object.parent, daElement);
 
       object.destination = document.querySelector(`.${daMove[0].trim()}`);
       object.breakpoint = daMove[1] ? daMove[1].trim() : '769';
@@ -75,19 +74,21 @@ const dynamicAdaptBack = (parent, element, index) => {
 const dynamicAdapt = (media, br) => {
   const array = daElementsArray.filter(({ breakpoint }) => breakpoint === br);
   if (media.matches) {
-    array.forEach(({ place, element, destination }) => {
-      dynamicAdaptTo(place, element, destination);
+    array.forEach((item) => {
+      item.index = indexInParent(item.parent, item.element);
+      dynamicAdaptTo(item.place, item.element, item.destination);
     });
   } else {
-    array.forEach(({ parent, element, index }) => {
-      dynamicAdaptBack(parent, element, index);
+    array.forEach((item) => {
+      dynamicAdaptBack(item.parent, item.element, item.index);
     });
   }
 };
 
-mediaArray = daElementsArray.map(({ type, breakpoint }) => `(${type}-width: ${breakpoint}px),${breakpoint}`);
-mediaArray = [...new Set(mediaArray)];
-mediaArray.forEach((item) => {
+mediaArray = daElementsArray
+  .map(({ type, breakpoint }) => `(${type}-width: ${breakpoint}px),${breakpoint}`)
+  .filter((item, index, self) => self.indexOf(item) === index)
+  .forEach((item) => {
   const arr = item.split(',');
   const media = window.matchMedia(arr[0]);
   const breakpoint = arr[1];
