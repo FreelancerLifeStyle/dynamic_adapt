@@ -1,6 +1,6 @@
 // Dynamic Adapt v.1
 // HTML data-da="where(uniq class name),when(breakpoint),position(digi),type (min, max)"
-// e.x. data-da="item,769,last,max"
+// e.x. data-da="item,767,last,max"
 // Andrikanych Yevhen 2020
 // https://www.youtube.com/c/freelancerlifestyle
 
