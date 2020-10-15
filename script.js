@@ -115,8 +115,8 @@ class DynamicAdapt {
   // по возрастанию для this.type = min
   // по убыванию для this.type = max
   arraySort(arr) {
-    arr.sort((a, b) => {
-      if (this.type === 'min') {
+    if (this.type === 'min') {
+      arr.sort((a, b) => {
         if (a.breakpoint === b.breakpoint) {
           if (a.place === b.place) {
             return 0;
@@ -130,8 +130,10 @@ class DynamicAdapt {
           return a.place - b.place;
         }
         return a.breakpoint - b.breakpoint;
-      }
-      if (this.type === 'max') {
+      });
+    }
+    if (this.type === 'max') {
+      arr.sort((a, b) => {
         if (a.breakpoint === b.breakpoint) {
           if (a.place === b.place) {
             return 0;
@@ -145,8 +147,8 @@ class DynamicAdapt {
           return b.place - a.place;
         }
         return b.breakpoint - a.breakpoint;
-      }
-    });
+      });
+    }
   }
 }
 
