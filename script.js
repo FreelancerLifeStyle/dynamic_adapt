@@ -131,8 +131,7 @@ class DynamicAdapt {
         }
         return a.breakpoint - b.breakpoint;
       });
-    }
-    if (this.type === 'max') {
+    } else {
       arr.sort((a, b) => {
         if (a.breakpoint === b.breakpoint) {
           if (a.place === b.place) {
@@ -148,6 +147,7 @@ class DynamicAdapt {
         }
         return b.breakpoint - a.breakpoint;
       });
+      return;
     }
   }
 }
