@@ -47,8 +47,8 @@ class DynamicAdapt {
 
     // навешивание слушателя на медиа-запрос
     // и вызов обработчика при первом запуске
-    this.mediaArray.forEach((item) => {
-      const mediaSplit = item.split(',');
+    this.mediaArray.forEach((media) => {
+      const mediaSplit = media.split(',');
       const mediaQuerie = window.matchMedia(mediaSplit[0]);
       const mediaBreakpoint = mediaSplit[1];
 
@@ -99,11 +99,11 @@ class DynamicAdapt {
   // Функция возврата
   moveBack(parent, element, index) {
     element.classList.remove(this.daClassname);
-    if (parent.children[index] === undefined) {
+    if (parent.children[index] !== undefined) {
+      parent.children[index].before(element);
+    } else {
       parent.append(element);
-      return;
     }
-    parent.children[index].before(element);
   }
 
   // Функция получения индекса внутри родителя
@@ -111,7 +111,9 @@ class DynamicAdapt {
     return [...parent.children].indexOf(element);
   }
 
-  // Функция сортировки массива по breakpoint и place по возрастанию
+  // Функция сортировки массива по breakpoint и place 
+  // по возрастанию для this.type = min
+  // по убыванию для this.type = max
   arraySort(arr) {
     arr.sort((a, b) => {
       if (a.breakpoint === b.breakpoint) {
