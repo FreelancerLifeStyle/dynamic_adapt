@@ -1,156 +1,135 @@
 // Dynamic Adapt v.1
-// HTML data-da="where(uniq class name),when(breakpoint),position(digi),type (min, max)"
-// e.x. data-da="item,767,last,max"
+// HTML data-da="where(uniq class name),position(digi),when(breakpoint)"
+// e.x. data-da="item,2,992"
 // Andrikanych Yevhen 2020
 // https://www.youtube.com/c/freelancerlifestyle
 
-class DynamicAdapt {
-  // массив объектов
-  elementsArray = [];
-  daClassname = '_dynamic_adapt_';
+(function () {
+	let originalPositions = [];
+	let daElements = document.querySelectorAll('[data-da]');
+	let daElementsArray = [];
+	let daMatchMedia = [];
+	//Заполняем массивы
+	if (daElements.length > 0) {
+		let number = 0;
+		for (let index = 0; index < daElements.length; index++) {
+			const daElement = daElements[index];
+			const daMove = daElement.getAttribute('data-da');
+			if (daMove != '') {
+				const daArray = daMove.split(',');
+				const daPlace = daArray[1] ? daArray[1].trim() : 'last';
+				const daBreakpoint = daArray[2] ? daArray[2].trim() : '767';
+				const daType = daArray[3] === 'min' ? daArray[3].trim() : 'max';
+				const daDestination = document.querySelector('.' + daArray[0].trim())
+				if (daArray.length > 0 && daDestination) {
+					daElement.setAttribute('data-da-index', number);
+					//Заполняем массив первоначальных позиций
+					originalPositions[number] = {
+						"parent": daElement.parentNode,
+						"index": indexInParent(daElement)
+					};
+					//Заполняем массив элементов 
+					daElementsArray[number] = {
+						"element": daElement,
+						"destination": document.querySelector('.' + daArray[0].trim()),
+						"place": daPlace,
+						"breakpoint": daBreakpoint,
+						"type": daType
+					}
+					number++;
+				}
+			}
+		}
+		dynamicAdaptSort(daElementsArray);
 
-  constructor(type) {
-    this.type = type;
-  }
+		//Создаем события в точке брейкпоинта
+		for (let index = 0; index < daElementsArray.length; index++) {
+			const el = daElementsArray[index];
+			const daBreakpoint = el.breakpoint;
+			const daType = el.type;
 
-  init() {
-    // массив DOM-элементов
-    this.elements = [...document.querySelectorAll('[data-da]')];
+			daMatchMedia.push(window.matchMedia("(" + daType + "-width: " + daBreakpoint + "px)"));
+			daMatchMedia[index].addListener(dynamicAdapt);
+		}
+	}
+	//Основная функция
+	function dynamicAdapt(e) {
+		for (let index = 0; index < daElementsArray.length; index++) {
+			const el = daElementsArray[index];
+			const daElement = el.element;
+			const daDestination = el.destination;
+			const daPlace = el.place;
+			const daBreakpoint = el.breakpoint;
+			const daClassname = "_dynamic_adapt_" + daBreakpoint;
 
-    // наполнение elementsArray объктами
-    this.elements.forEach((element) => {
-      const data = element.dataset.da.trim();
-      if (data !== '') {
-        const dataArray = data.split(',');
+			if (daMatchMedia[index].matches) {
+				//Перебрасываем элементы
+				if (!daElement.classList.contains(daClassname)) {
+					let actualIndex = indexOfElements(daDestination)[daPlace];
+					if (daPlace === 'first') {
+						actualIndex = indexOfElements(daDestination)[0];
+					} else if (daPlace === 'last') {
+						actualIndex = indexOfElements(daDestination)[indexOfElements(daDestination).length];
+					}
+					daDestination.insertBefore(daElement, daDestination.children[actualIndex]);
+					daElement.classList.add(daClassname);
+				}
+			} else {
+				//Возвращаем на место
+				if (daElement.classList.contains(daClassname)) {
+					dynamicAdaptBack(daElement);
+					daElement.classList.remove(daClassname);
+				}
+			}
+		}
+		customAdapt();
+	}
 
-        const oElement = {};
-        oElement.element = element;
-        oElement.parent = element.parentNode;
-        oElement.destination = document.querySelector(`.${dataArray[0].trim()}`);
-        oElement.breakpoint = dataArray[1] ? dataArray[1].trim() : '767';
-        oElement.place = dataArray[2] ? dataArray[2].trim() : 'last';
+	//Вызов основной функции
+	dynamicAdapt();
 
-        oElement.index = this.indexInParent(
-          oElement.parent, oElement.element,
-        );
-
-        this.elementsArray.push(oElement);
-      }
-    });
-
-    this.arraySort(this.elementsArray);
-
-    // массив уникальных медиа-запросов
-    this.mediaArray = this.elementsArray
-      .map(({ breakpoint }) => `(${this.type}-width: ${breakpoint}px),${breakpoint}`)
-      .filter((item, index, self) => self.indexOf(item) === index);
-
-    // навешивание слушателя на медиа-запрос
-    // и вызов обработчика при первом запуске
-    this.mediaArray.forEach((media) => {
-      const mediaSplit = media.split(',');
-      const mediaQuerie = window.matchMedia(mediaSplit[0]);
-      const mediaBreakpoint = mediaSplit[1];
-
-      // массив объектов с подходящим брейкпоинтом
-      const elementsFilter = this.elementsArray.filter(
-        ({ breakpoint }) => breakpoint === mediaBreakpoint
-      );
-      mediaQuerie.addEventListener('change', () => {
-        this.mediaHandler(mediaQuerie, elementsFilter);
-      });
-      this.mediaHandler(mediaQuerie, elementsFilter);
-    });
-  }
-
-  // Основная функция
-  mediaHandler(mediaQuerie, elementsFilter) {
-    if (mediaQuerie.matches) {
-      elementsFilter.forEach((oElement) => {
-        // получение индекса внутри родителя
-        oElement.index = this.indexInParent(
-          oElement.parent, oElement.element,
-        );
-        this.moveTo(oElement.place, oElement.element, oElement.destination);
-      });
-    } else {
-      elementsFilter.forEach(({ parent, element, index }) => {
-        if (element.classList.contains(this.daClassname)) {
-          this.moveBack(parent, element, index);
-        }
-      });
-    }
-  }
-
-  // Функция перемещения
-  moveTo(place, element, destination) {
-    element.classList.add(this.daClassname);
-    if (place === 'last' || place >= destination.children.length) {
-      destination.append(element);
-      return;
-    }
-    if (place === 'first') {
-      destination.prepend(element);
-      return;
-    }
-    destination.children[place].before(element);
-  }
-
-  // Функция возврата
-  moveBack(parent, element, index) {
-    element.classList.remove(this.daClassname);
-    if (parent.children[index] !== undefined) {
-      parent.children[index].before(element);
-    } else {
-      parent.append(element);
-    }
-  }
-
-  // Функция получения индекса внутри родителя
-  indexInParent(parent, element) {
-    return [...parent.children].indexOf(element);
-  }
-
-  // Функция сортировки массива по breakpoint и place 
-  // по возрастанию для this.type = min
-  // по убыванию для this.type = max
-  arraySort(arr) {
-    if (this.type === 'min') {
-      arr.sort((a, b) => {
-        if (a.breakpoint === b.breakpoint) {
-          if (a.place === b.place) {
-            return 0;
-          }
-          if (a.place === 'first' || b.place === 'last') {
-            return -1;
-          }
-          if (a.place === 'last' || b.place === 'first') {
-            return 1;
-          }
-          return a.place - b.place;
-        }
-        return a.breakpoint - b.breakpoint;
-      });
-    } else {
-      arr.sort((a, b) => {
-        if (a.breakpoint === b.breakpoint) {
-          if (a.place === b.place) {
-            return 0;
-          }
-          if (a.place === 'first' || b.place === 'last') {
-            return 1;
-          }
-          if (a.place === 'last' || b.place === 'first') {
-            return -1;
-          }
-          return b.place - a.place;
-        }
-        return b.breakpoint - a.breakpoint;
-      });
-      return;
-    }
-  }
-}
-
-const da = new DynamicAdapt('max');
-da.init();
+	//Функция возврата на место
+	function dynamicAdaptBack(el) {
+		const daIndex = el.getAttribute('data-da-index');
+		const originalPlace = originalPositions[daIndex];
+		const parentPlace = originalPlace['parent'];
+		const indexPlace = originalPlace['index'];
+		const actualIndex = indexOfElements(parentPlace, true)[indexPlace];
+		parentPlace.insertBefore(el, parentPlace.children[actualIndex]);
+	}
+	//Функция получения индекса внутри родителя
+	function indexInParent(el) {
+		var children = Array.prototype.slice.call(el.parentNode.children);
+		return children.indexOf(el);
+	}
+	//Функция получения массива индексов элементов внутри родителя 
+	function indexOfElements(parent, back) {
+		const children = parent.children;
+		const childrenArray = [];
+		for (let i = 0; i < children.length; i++) {
+			const childrenElement = children[i];
+			if (back) {
+				childrenArray.push(i);
+			} else {
+				//Исключая перенесенный элемент
+				if (childrenElement.getAttribute('data-da') == null) {
+					childrenArray.push(i);
+				}
+			}
+		}
+		return childrenArray;
+	}
+	//Сортировка объекта
+	function dynamicAdaptSort(arr) {
+		arr.sort(function (a, b) {
+			if (a.breakpoint > b.breakpoint) { return -1 } else { return 1 }
+		});
+		arr.sort(function (a, b) {
+			if (a.place > b.place) { return 1 } else { return -1 }
+		});
+	}
+	//Дополнительные сценарии адаптации
+	function customAdapt() {
+		//const viewport_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+	}
+}());
