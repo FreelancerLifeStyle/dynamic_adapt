@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="index.css" />
   <title>Динамический адаптив</title>
 </head>
 
@@ -13,35 +13,40 @@
     <header class="header">
       <div class="header__logo">Динамический адаптив</div>
     </header>
+
     <main class="content">
       <section class="content__section">
         <h2 class="content__title">Я Город</h2>
-        <div class="content__blocks content__blocks_city">
-          <div data-da="content__column_garden" class="content__block content__block_1">Я Коля</div>
-          <div data-da="content__column_garden, 900, 1 " class="content__block content__block_2 click">Я Аня</div>
-          <div data-da="content__column_river, 1200, last" class="content__block content__block_item content__block_3">Я Ваня</div>
+        <div class="content__blocks content__blocks-city">
+          <div data-da=".content__column-garden" class="content__block content__block-1">Я Коля</div>
+          <div data-da=".content__column-garden, 900, 1" class="content__block content__block-2 click">Я Аня</div>
+          <div data-da=".content__column-river, 900, last" class="content__block content__block-item content__block-3">Я Ваня</div>
         </div>
       </section>
+
       <section class="content__section">
         <h2 class="content__title">Я бабушка</h2>
         <div class="content__row">
-          <div class="content__column content__column_garden">
+          <div class="content__column content__column-garden">
             <h3 class="content__title">Я огород</h3>
-            <div data-da="content__blocks_city, 700, 3" class="content__block content__block_2">Я Лоцы</div>
+            <div data-da=".content__blocks_city, 700, 3" class="content__block content__block-2">Я Лоцы</div>
           </div>
-          <div class="content__column content__column_river">
+          <div class="content__column content__column-river">
             <h3 class="content__title">Я речка</h3>
-            <div class="content__block content__block_3">Я Оля</div>
-            <!-- <div class="content__block content__block_new-item content__block_3">Я Ваня</div> -->
+            <div class="content__block content__block-3">Я Оля</div>
+            <!-- <div class="content__block content__block-new-item content__block-3">Я Ваня</div> -->
           </div>
         </div>
       </section>
     </main>
+
     <footer class="footer">
       <div class="footer__text">Я в подвале :(</div>
     </footer>
   </div>
-  <script src="script.js"></script>
+
+  <script src="dynamicAdapt_old.js"></script>
+  <script src="index.js"></script>
 </body>
 
 </html>

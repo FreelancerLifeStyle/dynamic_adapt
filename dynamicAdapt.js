@@ -1,84 +1,73 @@
-// Dynamic Adapt v.1
-// HTML data-da="where(uniq class name),when(breakpoint),position(digi),type (min, max)"
-// e.x. data-da="item,767,last,max"
-// Andrikanych Yevhen 2020
-// https://www.youtube.com/c/freelancerlifestyle
-
 class DynamicAdapt {
-  // массив объектов
-  elementsArray = [];
-  daClassname = '_dynamic_adapt_';
-
   constructor(type) {
     this.type = type;
   }
 
   init() {
+    // массив объектов
+    this.оbjects = [];
+    this.daClassname = '_dynamic_adapt_';
     // массив DOM-элементов
-    this.elements = [...document.querySelectorAll('[data-da]')];
+    this.nodes = [...document.querySelectorAll('[data-da]')];
 
-    // наполнение elementsArray объктами
-    this.elements.forEach((element) => {
-      const data = element.dataset.da.trim();
-      if (data !== '') {
-        const dataArray = data.split(',');
-
-        const oElement = {};
-        oElement.element = element;
-        oElement.parent = element.parentNode;
-        oElement.destination = document.querySelector(`.${dataArray[0].trim()}`);
-        oElement.breakpoint = dataArray[1] ? dataArray[1].trim() : '767';
-        oElement.place = dataArray[2] ? dataArray[2].trim() : 'last';
-
-        oElement.index = this.indexInParent(
-          oElement.parent, oElement.element,
-        );
-
-        this.elementsArray.push(oElement);
-      }
+    // наполнение оbjects объктами
+    this.nodes.forEach((node) => {
+      const data = node.dataset.da.trim();
+      const dataArray = data.split(',');
+      const оbject = {};
+      оbject.element = node;
+      оbject.parent = node.parentNode;
+      оbject.destination = document.querySelector(`${dataArray[0].trim()}`);
+      оbject.breakpoint = dataArray[1] ? dataArray[1].trim() : '767';
+      оbject.place = dataArray[2] ? dataArray[2].trim() : 'last';
+      оbject.index = this.indexInParent(оbject.parent, оbject.element);
+      this.оbjects.push(оbject);
     });
 
-    this.arraySort(this.elementsArray);
+    this.arraySort(this.оbjects);
 
     // массив уникальных медиа-запросов
-    this.mediaArray = this.elementsArray
-      .map(({ breakpoint }) => `(${this.type}-width: ${breakpoint}px),${breakpoint}`)
+    this.mediaQueries = this.оbjects
+      .map(({
+        breakpoint
+      }) => `(${this.type}-width: ${breakpoint}px),${breakpoint}`)
       .filter((item, index, self) => self.indexOf(item) === index);
 
     // навешивание слушателя на медиа-запрос
     // и вызов обработчика при первом запуске
-    this.mediaArray.forEach((media) => {
+    this.mediaQueries.forEach((media) => {
       const mediaSplit = media.split(',');
-      const mediaQuerie = window.matchMedia(mediaSplit[0]);
+      const matchMedia = window.matchMedia(mediaSplit[0]);
       const mediaBreakpoint = mediaSplit[1];
 
       // массив объектов с подходящим брейкпоинтом
-      const elementsFilter = this.elementsArray.filter(
-        ({ breakpoint }) => breakpoint === mediaBreakpoint
+      const оbjectsFilter = this.оbjects.filter(
+        ({
+          breakpoint
+        }) => breakpoint === mediaBreakpoint
       );
-      mediaQuerie.addEventListener('change', () => {
-        this.mediaHandler(mediaQuerie, elementsFilter);
+      matchMedia.addEventListener('change', () => {
+        this.mediaHandler(matchMedia, оbjectsFilter);
       });
-      this.mediaHandler(mediaQuerie, elementsFilter);
+      this.mediaHandler(matchMedia, оbjectsFilter);
     });
   }
 
   // Основная функция
-  mediaHandler(mediaQuerie, elementsFilter) {
-    if (mediaQuerie.matches) {
-      elementsFilter.forEach((oElement) => {
-        // получение индекса внутри родителя
-        oElement.index = this.indexInParent(
-          oElement.parent, oElement.element,
-        );
-        this.moveTo(oElement.place, oElement.element, oElement.destination);
+  mediaHandler(matchMedia, оbjects) {
+    if (matchMedia.matches) {
+      оbjects.forEach((оbject) => {
+        оbject.index = this.indexInParent(оbject.parent, оbject.element);
+        this.moveTo(оbject.place, оbject.element, оbject.destination);
       });
     } else {
-      elementsFilter.forEach(({ parent, element, index }) => {
-        if (element.classList.contains(this.daClassname)) {
-          this.moveBack(parent, element, index);
+      оbjects.forEach(
+        ({ parent, element, index }) => {
+          if (element.classList.contains(this.daClassname)) {
+            this.moveBack(parent, element, index);
+          }
         }
-      });
+      );
     }
   }
 
@@ -151,6 +140,3 @@ class DynamicAdapt {
     }
   }
 }
-
-const da = new DynamicAdapt('max');
-da.init();
