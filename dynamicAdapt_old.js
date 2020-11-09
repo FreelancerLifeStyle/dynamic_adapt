@@ -1,5 +1,5 @@
 // Dynamic Adapt v.1
-// HTML data-da="where(uniq class name),position(digi),when(breakpoint)"
+// HTML data-da="where(uniq class name),when(breakpoint),position(digi)"
 // e.x. data-da=".item,2,992"
 // Andrikanych Yevhen 2020
 // https://www.youtube.com/c/freelancerlifestyle
