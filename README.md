@@ -10,7 +10,7 @@ new DynamicAdapt();
 ```
 ## Параметры
 
-`data-da="куда,когда,какой,тип"` (Пробелы допускаются)
+`data-da="куда,когда,какой,тип;куда,когда,какой,тип"` - Блок перемещения, может быть несколько через точку с запятой (Пробелы допускаются)
 
 Название | Значение по-умолчанию | Описание
 ------------- | ------------- | ------------- 
@@ -25,5 +25,6 @@ new DynamicAdapt();
 <div data-da=".content__column-garden,992,max" class="content__block">Я Коля</div>
 <div data-da=".content__column-garden,992,2,min" class="content__block">Я Коля</div>
 <div data-da=".content__column-garden,992,2,min" class="content__block">Я Коля</div>
+<div data-da=".content__column-garden,992,2,min;.content__column-river,767,last,max" class="content__block">Я Коля</div>
 ```
 
