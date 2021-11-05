@@ -12,9 +12,22 @@ class DynamicAdaptItem {
     private readonly _place: TypePlace;
     private readonly _type: TypeWidth;
     private readonly parentsElements: ParentsElements[];
+    private _movedCnt: number;
 
     static mobileStartWidth = 767;
     static padStartWidth = 992;
+
+    get movedCnt(): number {
+        return this._movedCnt;
+    }
+
+    incMoved(): void {
+        this._movedCnt++;
+    }
+
+    decMoved(): void {
+        this._movedCnt--;
+    }
 
     get type(): TypeWidth {
         return (this._type as TypeWidth) ? this._type : "max";
@@ -71,6 +84,7 @@ class DynamicAdaptItem {
         this.parentsElements = [{parent, element}];
         this._place = place;
         this._type = type;
+        this._movedCnt = 0;
     }
 }
 
@@ -171,10 +185,14 @@ class DynamicAdapt {
         dynamicAdaptItems.forEach(
             dynamicAdaptItem => {
                 if (matchMedia.matches) {
+                    // todo Вставить новую пару parent-item если movedCnt > 0
                     this.moveTo(dynamicAdaptItem.place, dynamicAdaptItem.element, dynamicAdaptItem.destination);
+                    dynamicAdaptItem.incMoved();
                 } else {
                     if (dynamicAdaptItem.element.classList.contains(this.daClassname)) {
                         this.moveBack(dynamicAdaptItem.parent, dynamicAdaptItem.element, dynamicAdaptItem.index);
+                        // todo Убрать последнюю пару parent-item если movedCnt > 1
+                        dynamicAdaptItem.decMoved();
                     }
                 }
             }
