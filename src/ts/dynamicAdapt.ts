@@ -6,13 +6,13 @@ class DynamicAdaptItem {
     private readonly _breakpoint: number;
     private readonly _place: TypePlace;
     private readonly _index: number;
-    private readonly _type: string;
+    private readonly _type: TypeWidth;
 
     static mobaleStartWidth = 767;
     static planshetStartWidth = 992;
 
     get type(): TypeWidth {
-        return (this._type !== "min" && this._type !== "max") ? "max" : this._type;
+        return (this._type as TypeWidth) ? this._type : "max";
     }
 
     public get breakpoint(): number {
@@ -59,7 +59,7 @@ class DynamicAdaptItem {
                 public element: HTMLDivElement,
                 public parent: HTMLDivElement,
                 place: TypePlace,
-                type: string
+                type: TypeWidth
     ) {
         this._breakpoint = DynamicAdaptItem.str2Num(breakpoint, DynamicAdaptItem.mobaleStartWidth);
         this._index = DynamicAdaptItem.indexInParent(parent, element);
@@ -84,12 +84,12 @@ class DynamicAdapt {
 
                     if (destination) {
                         const dynamicAdaptItem = new DynamicAdaptItem(
-                            dataArray[2],
+                            dataArray[1].trim(),
                             destination,
                             node,
                             node.parentNode as HTMLDivElement,
-                            dataArray[1] ? dataArray[1].trim() as TypePlace : "last",
-                            dataArray.length === 3 ? dataArray[3] : "max"
+                            dataArray.length === 2 ? dataArray[2].trim() as TypePlace : "last",
+                            dataArray.length === 3 ? dataArray[3].trim() as TypeWidth : "max"
                         );
 
                         this.dataDaNodes.push(dynamicAdaptItem);
