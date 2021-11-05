@@ -1,15 +1,20 @@
 type TypeWidth = "min" | "max";
 type TypePlace = "first" | "last" | number;
 
+interface ParentsElements {
+    parent: HTMLDivElement;
+    element: HTMLDivElement;
+}
+
 class DynamicAdaptItem {
 
     private readonly _breakpoint: number;
     private readonly _place: TypePlace;
-    private readonly _index: number;
     private readonly _type: TypeWidth;
+    private readonly parentsElements: ParentsElements[];
 
-    static mobaleStartWidth = 767;
-    static planshetStartWidth = 992;
+    static mobileStartWidth = 767;
+    static padStartWidth = 992;
 
     get type(): TypeWidth {
         return (this._type as TypeWidth) ? this._type : "max";
@@ -20,7 +25,8 @@ class DynamicAdaptItem {
     }
 
     public get index(): number {
-        return this._index;
+        const {parent, element} = this.parentsElements[this.parentsElements.length - 1];
+        return DynamicAdaptItem.indexInParent(parent, element);
     }
 
     public get place(): number {
@@ -61,8 +67,8 @@ class DynamicAdaptItem {
                 place: TypePlace,
                 type: TypeWidth
     ) {
-        this._breakpoint = DynamicAdaptItem.str2Num(breakpoint, DynamicAdaptItem.mobaleStartWidth);
-        this._index = DynamicAdaptItem.indexInParent(parent, element);
+        this._breakpoint = DynamicAdaptItem.str2Num(breakpoint, DynamicAdaptItem.mobileStartWidth);
+        this.parentsElements = [{parent, element}];
         this._place = place;
         this._type = type;
     }
@@ -74,7 +80,7 @@ class DynamicAdapt {
     private daClassname = "_dynamic_adapt_";
 
     constructor() {
-        // наполнение objects объктами
+        // наполнение objects объектами
         document.querySelectorAll<HTMLDivElement>("[data-da]")
             .forEach(node => {
                 if (node.dataset.da) {
