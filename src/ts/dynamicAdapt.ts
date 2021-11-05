@@ -49,8 +49,8 @@ class DynamicAdaptItem {
         return 0;
     }
 
-    static indexInParent(parent: ParentNode | null, element: HTMLDivElement): number {
-        const array: HTMLDivElement[] = parent ? Array.prototype.slice.call(parent.children) : [];
+    static indexInParent(parent: ParentNode, element: HTMLDivElement): number {
+        const array: HTMLDivElement[] = Array.prototype.slice.call(parent.children);
         return array.indexOf(element);
     }
 
