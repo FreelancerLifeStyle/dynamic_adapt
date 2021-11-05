@@ -78,22 +78,24 @@ class DynamicAdapt {
         document.querySelectorAll<HTMLDivElement>("[data-da]")
             .forEach(node => {
                 if (node.dataset.da) {
-                    const dataArray: string[] = node.dataset.da.trim().split(",");
+                    node.dataset.da.trim().split(";").forEach(blk => {
+                        const dataArray: string[] = blk.split(",");
 
-                    const destination = document.querySelector<HTMLDivElement>(dataArray[0].trim());
+                        const destination = document.querySelector<HTMLDivElement>(dataArray[0].trim());
 
-                    if (destination) {
-                        const dynamicAdaptItem = new DynamicAdaptItem(
-                            dataArray[1].trim(),
-                            destination,
-                            node,
-                            node.parentNode as HTMLDivElement,
-                            dataArray.length === 2 ? dataArray[2].trim() as TypePlace : "last",
-                            dataArray.length === 3 ? dataArray[3].trim() as TypeWidth : "max"
-                        );
+                        if (destination) {
+                            const dynamicAdaptItem = new DynamicAdaptItem(
+                                dataArray[1].trim(),
+                                destination,
+                                node,
+                                node.parentNode as HTMLDivElement,
+                                dataArray.length === 2 ? dataArray[2].trim() as TypePlace : "last",
+                                dataArray.length === 3 ? dataArray[3].trim() as TypeWidth : "max"
+                            );
 
-                        this.dataDaNodes.push(dynamicAdaptItem);
-                    }
+                            this.dataDaNodes.push(dynamicAdaptItem);
+                        }
+                    });
                 }
             });
 
