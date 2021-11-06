@@ -1,21 +1,26 @@
 type TypeWidth = "min" | "max";
 type TypePlace = "first" | "last" | number;
 
-interface ParentsElements {
+interface ParentsIndexes {
     parent: HTMLDivElement;
     index: number;
 }
 
 class DynamicAdaptItem {
 
+
     private readonly _breakpoint: number;
     private readonly _place: TypePlace;
     private readonly _type: TypeWidth;
-    private readonly parentsElements: ParentsElements[];
+    private _parentsIndexes: ParentsIndexes[];
     private _movedCnt: number;
 
     static mobileStartWidth = 767;
     static padStartWidth = 992;
+
+    set parentsIndexes(value: ParentsIndexes) {
+        this._parentsIndexes.push(value);
+    }
 
     get movedCnt(): number {
         return this._movedCnt;
@@ -38,7 +43,7 @@ class DynamicAdaptItem {
     }
 
     public get index(): number {
-        return this.parentsElements[this.parentsElements.length - 1].index;
+        return this._parentsIndexes[this._parentsIndexes.length - 1].index;
     }
 
     public get place(): number {
@@ -80,7 +85,7 @@ class DynamicAdaptItem {
                 type: TypeWidth
     ) {
         this._breakpoint = DynamicAdaptItem.str2Num(breakpoint, DynamicAdaptItem.mobileStartWidth);
-        this.parentsElements = [{parent, index: DynamicAdaptItem.indexInParent(parent, element)}];
+        this._parentsIndexes = [{parent, index: DynamicAdaptItem.indexInParent(parent, element)}];
         this._place = place;
         this._type = type;
         this._movedCnt = 0;
