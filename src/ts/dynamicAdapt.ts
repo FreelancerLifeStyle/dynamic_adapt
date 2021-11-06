@@ -3,7 +3,7 @@ type TypePlace = "first" | "last" | number;
 
 interface ParentsElements {
     parent: HTMLDivElement;
-    element: HTMLDivElement;
+    index: number;
 }
 
 class DynamicAdaptItem {
@@ -38,8 +38,7 @@ class DynamicAdaptItem {
     }
 
     public get index(): number {
-        const {parent, element} = this.parentsElements[this.parentsElements.length - 1];
-        return DynamicAdaptItem.indexInParent(parent, element);
+        return this.parentsElements[this.parentsElements.length - 1].index;
     }
 
     public get place(): number {
@@ -81,7 +80,7 @@ class DynamicAdaptItem {
                 type: TypeWidth
     ) {
         this._breakpoint = DynamicAdaptItem.str2Num(breakpoint, DynamicAdaptItem.mobileStartWidth);
-        this.parentsElements = [{parent, element}];
+        this.parentsElements = [{parent, index: DynamicAdaptItem.indexInParent(parent, element)}];
         this._place = place;
         this._type = type;
         this._movedCnt = 0;
