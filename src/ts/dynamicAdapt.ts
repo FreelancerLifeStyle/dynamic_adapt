@@ -22,6 +22,10 @@ class DynamicAdaptItem {
         this._parentsIndexes.push(value);
     }
 
+    public parentsIndexesPop(): void {
+        this._parentsIndexes.pop();
+    }
+
     get movedCnt(): number {
         return this._movedCnt;
     }
@@ -72,7 +76,7 @@ class DynamicAdaptItem {
         return 0;
     }
 
-    static indexInParent(parent: ParentNode, element: HTMLDivElement): number {
+    static indexInParent(parent: HTMLDivElement, element: HTMLDivElement): number {
         const array: HTMLDivElement[] = Array.prototype.slice.call(parent.children);
         return array.indexOf(element);
     }
@@ -190,12 +194,22 @@ class DynamicAdapt {
             dynamicAdaptItem => {
                 if (matchMedia.matches) {
                     // todo Вставить новую пару parent-index если movedCnt > 0
+                    if (dynamicAdaptItem.movedCnt > 0) {
+                        const parent = dynamicAdaptItem.element.parentElement! as HTMLDivElement;
+                        dynamicAdaptItem.parentsIndexes = {
+                            parent,
+                            index: DynamicAdaptItem.indexInParent(parent, dynamicAdaptItem.element)
+                        };
+                    }
                     this.moveTo(dynamicAdaptItem.place, dynamicAdaptItem.element, dynamicAdaptItem.destination);
                     dynamicAdaptItem.incMoved();
                 } else {
                     if (dynamicAdaptItem.element.classList.contains(this.daClassname)) {
                         this.moveBack(dynamicAdaptItem.parent, dynamicAdaptItem.element, dynamicAdaptItem.index);
                         // todo Убрать последнюю пару parent-index если movedCnt > 1
+                        if (dynamicAdaptItem.movedCnt > 1) {
+                            dynamicAdaptItem.parentsIndexesPop();
+                        }
                         dynamicAdaptItem.decMoved();
                     }
                 }
