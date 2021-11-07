@@ -31,13 +31,13 @@ class DynamicAdaptItem {
     }
 
     incMoved(): void {
-        console.log(`this._movedCnt`);
-        this._movedCnt += 1;
-        console.log(`Class: ${this.element.textContent} movedCnt: ${this._movedCnt}`);
+        this._movedCnt++;
+        console.log(`Class: ${this.element.textContent} movedCnt: ${this.movedCnt}`);
     }
 
     decMoved(): void {
         this._movedCnt--;
+        console.log(`Class: ${this.element.textContent} movedCnt: ${this.movedCnt}`);
     }
 
     get type(): TypeWidth {
