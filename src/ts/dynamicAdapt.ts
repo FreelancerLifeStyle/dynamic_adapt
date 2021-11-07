@@ -189,13 +189,13 @@ class DynamicAdapt {
         dynamicAdaptItems.forEach(
             dynamicAdaptItem => {
                 if (matchMedia.matches) {
-                    // todo Вставить новую пару parent-item если movedCnt > 0
+                    // todo Вставить новую пару parent-index если movedCnt > 0
                     this.moveTo(dynamicAdaptItem.place, dynamicAdaptItem.element, dynamicAdaptItem.destination);
                     dynamicAdaptItem.incMoved();
                 } else {
                     if (dynamicAdaptItem.element.classList.contains(this.daClassname)) {
                         this.moveBack(dynamicAdaptItem.parent, dynamicAdaptItem.element, dynamicAdaptItem.index);
-                        // todo Убрать последнюю пару parent-item если movedCnt > 1
+                        // todo Убрать последнюю пару parent-index если movedCnt > 1
                         dynamicAdaptItem.decMoved();
                     }
                 }
