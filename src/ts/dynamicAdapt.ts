@@ -31,7 +31,9 @@ class DynamicAdaptItem {
     }
 
     incMoved(): void {
-        this._movedCnt++;
+        console.log(`this._movedCnt`);
+        this._movedCnt += 1;
+        console.log(`Class: ${this.element.textContent} movedCnt: ${this._movedCnt}`);
     }
 
     decMoved(): void {
