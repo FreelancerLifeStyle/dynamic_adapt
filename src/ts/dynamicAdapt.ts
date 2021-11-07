@@ -15,6 +15,8 @@ class DynamicAdaptItem {
     private _parentsIndexes: ParentsIndexes[];
     private _movedCnt: number;
 
+    public parent: DynamicAdaptItem | undefined = undefined;
+
     static mobileStartWidth = 767;
     static padStartWidth = 992;
 
@@ -196,23 +198,26 @@ class DynamicAdapt {
             dynamicAdaptItem => {
                 if (matchMedia.matches) {
                     // todo Вставить новую пару parent-index если movedCnt > 0
-                    if (dynamicAdaptItem.movedCnt > 0) {
-                        const parent = dynamicAdaptItem.element.parentElement! as HTMLDivElement;
-                        dynamicAdaptItem.parentsIndexes = {
-                            parent,
-                            index: DynamicAdaptItem.indexInParent(parent, dynamicAdaptItem.element)
-                        };
+                    // if (dynamicAdaptItem.movedCnt > 0) {
+                    //     const parent = dynamicAdaptItem.element.parentElement! as HTMLDivElement;
+                    //     dynamicAdaptItem.parentsIndexes = {
+                    //         parent,
+                    //         index: DynamicAdaptItem.indexInParent(parent, dynamicAdaptItem.element)
+                    //     };
+                    // }
+                    const breakpoint = Number(matchMedia.media.split(":")[1].split("px")[0].trim());
+                    if (breakpoint === dynamicAdaptItem.breakpoint) {
+                        this.moveTo(dynamicAdaptItem.place, dynamicAdaptItem.element, dynamicAdaptItem.destination);
                     }
-                    this.moveTo(dynamicAdaptItem.place, dynamicAdaptItem.element, dynamicAdaptItem.destination);
-                    dynamicAdaptItem.incMoved();
+                    // dynamicAdaptItem.incMoved();
                 } else {
                     if (dynamicAdaptItem.element.classList.contains(this.daClassname)) {
                         this.moveBack(dynamicAdaptItem.parent, dynamicAdaptItem.element, dynamicAdaptItem.index);
-                        // todo Убрать последнюю пару parent-index если movedCnt > 1
-                        if (dynamicAdaptItem.movedCnt > 1) {
-                            dynamicAdaptItem.parentsIndexesPop();
-                        }
-                        dynamicAdaptItem.decMoved();
+                        // todo Убрать последнюю пару parent-index если movedCnt > 0
+                        // if (dynamicAdaptItem.movedCnt > 0) {
+                        //     dynamicAdaptItem.parentsIndexesPop();
+                        // }
+                        // dynamicAdaptItem.decMoved();
                     }
                 }
             }
