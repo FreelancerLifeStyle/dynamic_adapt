@@ -12,6 +12,7 @@ class DynamicAdaptItem {
     private readonly _place: TypePlace;
     private readonly _type: TypeWidth;
     private _parentsIndexes: ParentsIndexes[];
+    private _movedCnt: number;
 
     static mobileStartWidth = 767;
     static padStartWidth = 992;
@@ -25,27 +26,27 @@ class DynamicAdaptItem {
     }
 
     get movedCnt(): number {
-        return this.top.movedCnt;
+        return this.top._movedCnt;
     }
 
     get top(): DynamicAdaptItem {
         let top = this.parentItem;
         while (true) {
-            if (top && !top.parentItem) {
-                return top;
+            if (!top) {
+                return this;
             } else {
-                top = top!.parentItem;
+                top = top.parentItem;
             }
         }
     }
 
     incMoved(): void {
-        this.top.incMoved();
+        this.top._movedCnt++;
         console.log(`Class: ${this.element.textContent} movedCnt: ${this.movedCnt}`);
     }
 
     decMoved(): void {
-        this.top.decMoved();
+        this.top._movedCnt--;
         console.log(`Class: ${this.element.textContent} movedCnt: ${this.movedCnt}`);
     }
 
@@ -104,6 +105,7 @@ class DynamicAdaptItem {
         this._parentsIndexes = [{parent, index: DynamicAdaptItem.indexInParent(parent, element)}];
         this._place = place;
         this._type = type;
+        this._movedCnt = 0;
     }
 }
 
@@ -117,18 +119,19 @@ class DynamicAdapt {
         document.querySelectorAll<HTMLDivElement>("[data-da]")
             .forEach(node => {
                 if (node.dataset.da) {
-                    let parentItem: DynamicAdaptItem | undefined = undefined;
+                    let dynamicAdaptItem: DynamicAdaptItem | undefined = undefined;
                     node.dataset.da.trim().split(";").forEach(blk => {
                         const dataArray: string[] = blk.split(",");
 
                         const destination = document.querySelector<HTMLDivElement>(dataArray[0].trim());
 
                         if (destination) {
-                            const dynamicAdaptItem = new DynamicAdaptItem(
+                            dynamicAdaptItem = new DynamicAdaptItem(
                                 dataArray[1].trim(),
                                 destination,
                                 node,
                                 node.parentNode as HTMLDivElement,
+                                dynamicAdaptItem,
                                 dataArray.length === 2 ? dataArray[2].trim() as TypePlace : "last",
                                 dataArray.length === 3 ? dataArray[3].trim() as TypeWidth : "max"
                             );
@@ -205,27 +208,28 @@ class DynamicAdapt {
         dynamicAdaptItems.forEach(
             dynamicAdaptItem => {
                 if (matchMedia.matches) {
-                    // todo Вставить новую пару parent-index если movedCnt > 0
-                    // if (dynamicAdaptItem.movedCnt > 0) {
-                    //     const parent = dynamicAdaptItem.element.parentElement! as HTMLDivElement;
-                    //     dynamicAdaptItem.parentsIndexes = {
-                    //         parent,
-                    //         index: DynamicAdaptItem.indexInParent(parent, dynamicAdaptItem.element)
-                    //     };
-                    // }
                     const breakpoint = Number(matchMedia.media.split(":")[1].split("px")[0].trim());
                     if (breakpoint === dynamicAdaptItem.breakpoint) {
+                        // todo Вставить новую пару parent-index если movedCnt > 0
+                        if (dynamicAdaptItem.movedCnt > 0) {
+                            const parent = dynamicAdaptItem.element.parentElement! as HTMLDivElement;
+                            dynamicAdaptItem.parentsIndexes = {
+                                parent,
+                                index: DynamicAdaptItem.indexInParent(parent, dynamicAdaptItem.element)
+                            };
+                        }
                         this.moveTo(dynamicAdaptItem.place, dynamicAdaptItem.element, dynamicAdaptItem.destination);
+                        dynamicAdaptItem.incMoved();
                     }
-                    // dynamicAdaptItem.incMoved();
+
                 } else {
                     if (dynamicAdaptItem.element.classList.contains(this.daClassname)) {
                         this.moveBack(dynamicAdaptItem.parent, dynamicAdaptItem.element, dynamicAdaptItem.index);
                         // todo Убрать последнюю пару parent-index если movedCnt > 0
-                        // if (dynamicAdaptItem.movedCnt > 0) {
-                        //     dynamicAdaptItem.parentsIndexesPop();
-                        // }
-                        // dynamicAdaptItem.decMoved();
+                        if (dynamicAdaptItem.movedCnt > 0) {
+                            dynamicAdaptItem.parentsIndexesPop();
+                        }
+                        dynamicAdaptItem.decMoved();
                     }
                 }
             }
