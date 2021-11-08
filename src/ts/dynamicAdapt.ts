@@ -8,14 +8,10 @@ interface ParentsIndexes {
 
 class DynamicAdaptItem {
 
-
     private readonly _breakpoint: number;
     private readonly _place: TypePlace;
     private readonly _type: TypeWidth;
     private _parentsIndexes: ParentsIndexes[];
-    private _movedCnt: number;
-
-    public parent: DynamicAdaptItem | undefined = undefined;
 
     static mobileStartWidth = 767;
     static padStartWidth = 992;
@@ -29,16 +25,27 @@ class DynamicAdaptItem {
     }
 
     get movedCnt(): number {
-        return this._movedCnt;
+        return this.top.movedCnt;
+    }
+
+    get top(): DynamicAdaptItem {
+        let top = this.parentItem;
+        while (true) {
+            if (top && !top.parentItem) {
+                return top;
+            } else {
+                top = top!.parentItem;
+            }
+        }
     }
 
     incMoved(): void {
-        this._movedCnt++;
+        this.top.incMoved();
         console.log(`Class: ${this.element.textContent} movedCnt: ${this.movedCnt}`);
     }
 
     decMoved(): void {
-        this._movedCnt--;
+        this.top.decMoved();
         console.log(`Class: ${this.element.textContent} movedCnt: ${this.movedCnt}`);
     }
 
@@ -89,6 +96,7 @@ class DynamicAdaptItem {
                 public destination: HTMLDivElement,
                 public element: HTMLDivElement,
                 public parent: HTMLDivElement,
+                public parentItem: DynamicAdaptItem | undefined,
                 place: TypePlace,
                 type: TypeWidth
     ) {
@@ -96,7 +104,6 @@ class DynamicAdaptItem {
         this._parentsIndexes = [{parent, index: DynamicAdaptItem.indexInParent(parent, element)}];
         this._place = place;
         this._type = type;
-        this._movedCnt = 0;
     }
 }
 
@@ -110,6 +117,7 @@ class DynamicAdapt {
         document.querySelectorAll<HTMLDivElement>("[data-da]")
             .forEach(node => {
                 if (node.dataset.da) {
+                    let parentItem: DynamicAdaptItem | undefined = undefined;
                     node.dataset.da.trim().split(";").forEach(blk => {
                         const dataArray: string[] = blk.split(",");
 
