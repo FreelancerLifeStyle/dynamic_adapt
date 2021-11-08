@@ -234,6 +234,9 @@ class DynamicAdapt {
                             dynamicAdaptItem.parentsIndexesPop();
                         }
                         dynamicAdaptItem.decMoved();
+                        if (dynamicAdaptItem.movedCnt === 0) {
+                            dynamicAdaptItem.element.classList.remove(this.daClassname);
+                        }
                     }
                 }
             }
@@ -254,7 +257,6 @@ class DynamicAdapt {
 
     // Функция возврата
     private moveBack(parent: HTMLDivElement, element: HTMLDivElement, index: number) {
-        element.classList.remove(this.daClassname);
         const children = Array.from(parent.children);
         if (children.length === 0) {
             parent.insertAdjacentElement("beforeend", element);
