@@ -30,10 +30,10 @@ class DynamicAdaptItem {
     }
 
     get top(): DynamicAdaptItem {
-        let top = this.parentItem;
+        let top: DynamicAdaptItem | undefined = this;
         while (true) {
-            if (!top) {
-                return this;
+            if (!top.parentItem) {
+                return top;
             } else {
                 top = top.parentItem;
             }
