@@ -62,6 +62,10 @@ class DynamicAdaptItem {
         return this._parentsIndexes[this._parentsIndexes.length - 1].index;
     }
 
+    public get parent(): HTMLDivElement {
+        return this._parentsIndexes[this._parentsIndexes.length - 1].parent;
+    }
+
     public get place(): number {
         return DynamicAdaptItem.place2Index(this._place, this.destination);
     }
@@ -96,7 +100,7 @@ class DynamicAdaptItem {
     constructor(breakpoint: string,
                 public destination: HTMLDivElement,
                 public element: HTMLDivElement,
-                public parent: HTMLDivElement,
+                parent: HTMLDivElement,
                 public parentItem: DynamicAdaptItem | undefined,
                 place: TypePlace,
                 type: TypeWidth
@@ -226,7 +230,7 @@ class DynamicAdapt {
                     if (dynamicAdaptItem.element.classList.contains(this.daClassname)) {
                         this.moveBack(dynamicAdaptItem.parent, dynamicAdaptItem.element, dynamicAdaptItem.index);
                         // todo Убрать последнюю пару parent-index если movedCnt > 0
-                        if (dynamicAdaptItem.movedCnt > 0) {
+                        if (dynamicAdaptItem.movedCnt > 1) {
                             dynamicAdaptItem.parentsIndexesPop();
                         }
                         dynamicAdaptItem.decMoved();
