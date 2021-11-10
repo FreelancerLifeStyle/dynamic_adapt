@@ -197,10 +197,16 @@ class DynamicAdapt {
                         // todo Вставить новую пару parent-index если movedCnt > 0
                         if (dynamicAdaptItem.movedCnt > 0) {
                             const parent = dynamicAdaptItem.element.parentElement! as HTMLDivElement;
-                            dynamicAdaptItem.parentsIndexes = {
+                            const parentsIndexes: ParentsIndexes = {
                                 parent,
                                 index: DynamicAdaptItem.indexInParent(parent, dynamicAdaptItem.element)
                             };
+                            if (lastParentsIndexes && lastParentsIndexes.removeClass && lastParentsIndexes.insertClass) {
+                                parentsIndexes.insertClass = lastParentsIndexes.removeClass;
+                                parentsIndexes.removeClass = lastParentsIndexes.insertClass;
+                            }
+
+                            dynamicAdaptItem.parentsIndexes = parentsIndexes;
                         }
                         this.moveTo(dynamicAdaptItem.place, dynamicAdaptItem.element, dynamicAdaptItem.destination);
                         dynamicAdaptItem.incMoved();
