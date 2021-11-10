@@ -13,7 +13,7 @@ class DynamicAdaptItem {
     private readonly _breakpoint: number;
     private readonly _place: TypePlace;
     private readonly _type: TypeWidth;
-    private _parentsIndexes: ParentsIndexes[];
+    private readonly _parentsIndexes: ParentsIndexes[];
     private _movedCnt: number;
 
     static mobileStartWidth = 767;
