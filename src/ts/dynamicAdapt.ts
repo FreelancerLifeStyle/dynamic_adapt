@@ -157,7 +157,6 @@ class DynamicAdapt {
                 }
             });
 
-        // this.arraySort(this.dataDaNodes);
         // навешивание слушателя на медиа-запрос
         // и вызов обработчика при первом запуске
         this.dataDaNodes.map(item => `(${item.type}-width: ${item.breakpoint}px), ${item.breakpoint}`)
@@ -176,48 +175,6 @@ class DynamicAdapt {
                 this.mediaHandler(matchMedia, objectsFilter);
             });
     }
-
-
-    // Функция сортировки массива по breakpoint и place
-    // по возрастанию для this.type = min
-    // по убыванию для this.type = max
-    // private arraySort(arr: DynamicAdaptItem[]): void {
-    //     arr.sort((a: DynamicAdaptItem, b: DynamicAdaptItem): number => {
-    //         if (a.breakpoint === b.breakpoint) {
-    //             if (a.place === b.place) {
-    //                 return 0;
-    //             }
-    //
-    //             if (this.type === "min") {
-    //                 if (a.place < b.place) {
-    //                     return -1;
-    //                 }
-    //
-    //                 if (a.place > b.place) {
-    //                     return 1;
-    //                 }
-    //
-    //                 return a.place - b.place;
-    //             } else {
-    //                 if (b.place < a.place) {
-    //                     return -1;
-    //                 }
-    //
-    //                 if (b.place > a.place) {
-    //                     return 1;
-    //                 }
-    //
-    //                 return b.place - a.place;
-    //             }
-    //         }
-    //
-    //         if (this.type === "min") {
-    //             return a.breakpoint - b.breakpoint;
-    //         } else {
-    //             return b.breakpoint - a.breakpoint;
-    //         }
-    //     });
-    // }
 
     private mediaHandler(matchMedia: MediaQueryList, dynamicAdaptItems: DynamicAdaptItem[]) {
         dynamicAdaptItems.forEach(
