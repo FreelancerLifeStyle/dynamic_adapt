@@ -155,7 +155,8 @@ class DynamicAdapt {
                                 node.parentNode as HTMLDivElement,
                                 dynamicAdaptItem,
                                 dataArray.length === 2 ? dataArray[2].trim() as TypePlace : "last",
-                                dataArray.length === 3 ? dataArray[3].trim() as TypeWidth : "max"
+                                dataArray.length === 3 ? dataArray[3].trim() as TypeWidth : "max",
+                                dataArray[4] ? dataArray[4].trim() : undefined
                             );
 
                             this.dataDaNodes.push(dynamicAdaptItem);
