@@ -203,8 +203,8 @@ class DynamicAdapt {
                                 index: DynamicAdaptItem.indexInParent(parent, dynamicAdaptItem.element)
                             };
                             if (lastParentsIndexes && lastParentsIndexes.removeClass && lastParentsIndexes.insertClass) {
-                                parentsIndexes.insertClass = lastParentsIndexes.removeClass;
-                                parentsIndexes.removeClass = lastParentsIndexes.insertClass;
+                                parentsIndexes.removeClass = lastParentsIndexes.removeClass;
+                                parentsIndexes.insertClass = lastParentsIndexes.insertClass;
                             }
 
                             dynamicAdaptItem.parentsIndexes = parentsIndexes;
@@ -218,8 +218,8 @@ class DynamicAdapt {
                         this.moveBack(dynamicAdaptItem.parent, dynamicAdaptItem.element, dynamicAdaptItem.index);
                         const lastParentsIndexes = dynamicAdaptItem.lastParentsIndexes();
                         if (lastParentsIndexes && lastParentsIndexes.removeClass && lastParentsIndexes.insertClass) {
-                            dynamicAdaptItem.element.classList.remove(lastParentsIndexes.removeClass);
-                            dynamicAdaptItem.element.classList.add(lastParentsIndexes.insertClass);
+                            dynamicAdaptItem.element.classList.remove(lastParentsIndexes.insertClass);
+                            dynamicAdaptItem.element.classList.add(lastParentsIndexes.removeClass);
                         }
                         // todo Убрать последнюю пару parent-index если movedCnt > 0
                         if (dynamicAdaptItem.movedCnt > 1) {
