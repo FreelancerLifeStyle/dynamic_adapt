@@ -27,6 +27,7 @@ new DynamicAdapt();
 <div data-da=".content__column-garden,992,max" class="content__block">Я Коля</div>
 <div data-da=".content__column-garden,992,2,min" class="content__block">Я Коля</div>
 <div data-da=".content__column-garden,992,2,min" class="content__block">Я Коля</div>
+<div data-da=".content__column-garden,992,2,min,content__block->content_new__block" class="content__block">Я Коля</div>
 <div data-da=".content__column-garden,992,2,min;.content__column-river,767,last,max" class="content__block">Я Коля</div>
 ```
 

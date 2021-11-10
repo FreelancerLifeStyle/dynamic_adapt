@@ -4,8 +4,8 @@ type TypePlace = "first" | "last" | number;
 interface ParentsIndexes {
     parent: HTMLDivElement;
     index: number;
-    removeClassName?: string;
-    insertClassName?: string;
+    removeClass?: string;
+    insertClass?: string;
 }
 
 class DynamicAdaptItem {
@@ -105,10 +105,19 @@ class DynamicAdaptItem {
                 parent: HTMLDivElement,
                 public parentItem: DynamicAdaptItem | undefined,
                 place: TypePlace,
-                type: TypeWidth
+                type: TypeWidth,
+                removeInsertClasses?: string
     ) {
         this._breakpoint = DynamicAdaptItem.str2Num(breakpoint, DynamicAdaptItem.mobileStartWidth);
-        this._parentsIndexes = [{parent, index: DynamicAdaptItem.indexInParent(parent, element)}];
+        const removeInsertClassesArr = removeInsertClasses?.split("->");
+        const removeClass = removeInsertClassesArr?.[0];
+        const insertClass = removeInsertClassesArr?.[1];
+        this._parentsIndexes = [{
+            parent,
+            index: DynamicAdaptItem.indexInParent(parent, element),
+            removeClass,
+            insertClass
+        }];
         this._place = place;
         this._type = type;
         this._movedCnt = 0;
