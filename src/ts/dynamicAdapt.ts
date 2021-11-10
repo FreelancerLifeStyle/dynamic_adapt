@@ -4,6 +4,8 @@ type TypePlace = "first" | "last" | number;
 interface ParentsIndexes {
     parent: HTMLDivElement;
     index: number;
+    removeClassName?: string;
+    insertClassName?: string;
 }
 
 class DynamicAdaptItem {
