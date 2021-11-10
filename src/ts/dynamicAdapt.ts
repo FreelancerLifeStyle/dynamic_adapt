@@ -215,6 +215,11 @@ class DynamicAdapt {
                 } else {
                     if (dynamicAdaptItem.element.classList.contains(this.daClassname)) {
                         this.moveBack(dynamicAdaptItem.parent, dynamicAdaptItem.element, dynamicAdaptItem.index);
+                        const lastParentsIndexes = dynamicAdaptItem.lastParentsIndexes();
+                        if (lastParentsIndexes && lastParentsIndexes.removeClass && lastParentsIndexes.insertClass) {
+                            dynamicAdaptItem.element.classList.remove(lastParentsIndexes.removeClass);
+                            dynamicAdaptItem.element.classList.add(lastParentsIndexes.insertClass);
+                        }
                         // todo Убрать последнюю пару parent-index если movedCnt > 0
                         if (dynamicAdaptItem.movedCnt > 1) {
                             dynamicAdaptItem.parentsIndexesPop();
