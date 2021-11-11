@@ -1,4 +1,4 @@
-import { fontsStl } from "./src/ts/functions";
+import { fontsStl } from "com";
 
 const autoprefixer = require("gulp-autoprefixer");
 const browsersync = require("browser-sync").create();
