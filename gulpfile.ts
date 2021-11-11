@@ -57,6 +57,7 @@ const path = {
         html: `${srcFolder}/**/*.html`,
         scss: `${srcFolder}/scss/style.scss`,
         ts: `${srcFolder}/ts/**/*.ts`,
+        ts_node: `../common-front/src/ts/*.ts`,
         img: `${srcFolder}/img/**/*.{jpg,png,svg,gif,ico,web}`,
     },
     clean: `./${projectFolder}/`
@@ -184,6 +185,7 @@ const watchFiles = () => {
     watch([path.watch.html], html);
     watch([path.watch.scss], css);
     watch([path.watch.ts], bundleTs);
+    watch([path.watch.ts_node], bundleTs);
     watch([path.watch.img], images);
 };
 
