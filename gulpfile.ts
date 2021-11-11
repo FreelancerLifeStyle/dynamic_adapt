@@ -27,6 +27,7 @@ const browserify = require("browserify");
 const sourceify = require("sourceify");
 const source = require("vinyl-source-stream");
 const tsify = require("tsify");
+const realpathify = require("realpathify");
 const {dest, src, series, parallel, watch, task} = require("gulp");
 
 const projectFolder = require("path").basename(__dirname);
@@ -163,6 +164,7 @@ const bundleTs = () => {
             packageCache: {}
         })
             .plugin(tsify)
+            .plugin(realpathify)
             .bundle();
 
     f.pipe(source("bundle.js"))
