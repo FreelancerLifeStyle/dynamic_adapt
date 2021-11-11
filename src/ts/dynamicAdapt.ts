@@ -4,6 +4,8 @@ type TypePlace = "first" | "last" | number;
 interface ParentsIndexes {
     parent: HTMLDivElement;
     index: number;
+    removeClass?: string;
+    insertClass?: string;
 }
 
 class DynamicAdaptItem {
@@ -11,7 +13,7 @@ class DynamicAdaptItem {
     private readonly _breakpoint: number;
     private readonly _place: TypePlace;
     private readonly _type: TypeWidth;
-    private _parentsIndexes: ParentsIndexes[];
+    private readonly _parentsIndexes: ParentsIndexes[];
     private _movedCnt: number;
 
     static mobileStartWidth = 767;
@@ -23,6 +25,13 @@ class DynamicAdaptItem {
 
     public parentsIndexesPop(): void {
         this._parentsIndexes.pop();
+    }
+
+    public lastParentsIndexes(): ParentsIndexes | undefined {
+        if (this._parentsIndexes.length === 0) {
+            return undefined;
+        }
+        return this._parentsIndexes[this._parentsIndexes.length - 1];
     }
 
     get movedCnt(): number {
@@ -103,10 +112,19 @@ class DynamicAdaptItem {
                 parent: HTMLDivElement,
                 public parentItem: DynamicAdaptItem | undefined,
                 place: TypePlace,
-                type: TypeWidth
+                type: TypeWidth,
+                removeInsertClasses?: string
     ) {
         this._breakpoint = DynamicAdaptItem.str2Num(breakpoint, DynamicAdaptItem.mobileStartWidth);
-        this._parentsIndexes = [{parent, index: DynamicAdaptItem.indexInParent(parent, element)}];
+        const removeInsertClassesArr = removeInsertClasses?.split("->");
+        const removeClass = removeInsertClassesArr?.[0];
+        const insertClass = removeInsertClassesArr?.[1];
+        this._parentsIndexes = [{
+            parent,
+            index: DynamicAdaptItem.indexInParent(parent, element),
+            removeClass,
+            insertClass
+        }];
         this._place = place;
         this._type = type;
         this._movedCnt = 0;
@@ -137,7 +155,8 @@ class DynamicAdapt {
                                 node.parentNode as HTMLDivElement,
                                 dynamicAdaptItem,
                                 dataArray.length === 2 ? dataArray[2].trim() as TypePlace : "last",
-                                dataArray.length === 3 ? dataArray[3].trim() as TypeWidth : "max"
+                                dataArray.length === 3 ? dataArray[3].trim() as TypeWidth : "max",
+                                dataArray[4] ? dataArray[4].trim() : undefined
                             );
 
                             this.dataDaNodes.push(dynamicAdaptItem);
@@ -146,7 +165,6 @@ class DynamicAdapt {
                 }
             });
 
-        // this.arraySort(this.dataDaNodes);
         // навешивание слушателя на медиа-запрос
         // и вызов обработчика при первом запуске
         this.dataDaNodes.map(item => `(${item.type}-width: ${item.breakpoint}px), ${item.breakpoint}`)
@@ -166,61 +184,30 @@ class DynamicAdapt {
             });
     }
 
-
-    // Функция сортировки массива по breakpoint и place
-    // по возрастанию для this.type = min
-    // по убыванию для this.type = max
-    // private arraySort(arr: DynamicAdaptItem[]): void {
-    //     arr.sort((a: DynamicAdaptItem, b: DynamicAdaptItem): number => {
-    //         if (a.breakpoint === b.breakpoint) {
-    //             if (a.place === b.place) {
-    //                 return 0;
-    //             }
-    //
-    //             if (this.type === "min") {
-    //                 if (a.place < b.place) {
-    //                     return -1;
-    //                 }
-    //
-    //                 if (a.place > b.place) {
-    //                     return 1;
-    //                 }
-    //
-    //                 return a.place - b.place;
-    //             } else {
-    //                 if (b.place < a.place) {
-    //                     return -1;
-    //                 }
-    //
-    //                 if (b.place > a.place) {
-    //                     return 1;
-    //                 }
-    //
-    //                 return b.place - a.place;
-    //             }
-    //         }
-    //
-    //         if (this.type === "min") {
-    //             return a.breakpoint - b.breakpoint;
-    //         } else {
-    //             return b.breakpoint - a.breakpoint;
-    //         }
-    //     });
-    // }
-
     private mediaHandler(matchMedia: MediaQueryList, dynamicAdaptItems: DynamicAdaptItem[]) {
         dynamicAdaptItems.forEach(
             dynamicAdaptItem => {
                 if (matchMedia.matches) {
                     const breakpoint = Number(matchMedia.media.split(":")[1].split("px")[0].trim());
                     if (breakpoint === dynamicAdaptItem.breakpoint) {
+                        const lastParentsIndexes = dynamicAdaptItem.lastParentsIndexes();
+                        if (lastParentsIndexes && lastParentsIndexes.removeClass && lastParentsIndexes.insertClass) {
+                            dynamicAdaptItem.element.classList.remove(lastParentsIndexes.removeClass);
+                            dynamicAdaptItem.element.classList.add(lastParentsIndexes.insertClass);
+                        }
                         // todo Вставить новую пару parent-index если movedCnt > 0
                         if (dynamicAdaptItem.movedCnt > 0) {
                             const parent = dynamicAdaptItem.element.parentElement! as HTMLDivElement;
-                            dynamicAdaptItem.parentsIndexes = {
+                            const parentsIndexes: ParentsIndexes = {
                                 parent,
                                 index: DynamicAdaptItem.indexInParent(parent, dynamicAdaptItem.element)
                             };
+                            if (lastParentsIndexes && lastParentsIndexes.removeClass && lastParentsIndexes.insertClass) {
+                                parentsIndexes.removeClass = lastParentsIndexes.removeClass;
+                                parentsIndexes.insertClass = lastParentsIndexes.insertClass;
+                            }
+
+                            dynamicAdaptItem.parentsIndexes = parentsIndexes;
                         }
                         this.moveTo(dynamicAdaptItem.place, dynamicAdaptItem.element, dynamicAdaptItem.destination);
                         dynamicAdaptItem.incMoved();
@@ -229,6 +216,11 @@ class DynamicAdapt {
                 } else {
                     if (dynamicAdaptItem.element.classList.contains(this.daClassname)) {
                         this.moveBack(dynamicAdaptItem.parent, dynamicAdaptItem.element, dynamicAdaptItem.index);
+                        const lastParentsIndexes = dynamicAdaptItem.lastParentsIndexes();
+                        if (lastParentsIndexes && lastParentsIndexes.removeClass && lastParentsIndexes.insertClass) {
+                            dynamicAdaptItem.element.classList.remove(lastParentsIndexes.insertClass);
+                            dynamicAdaptItem.element.classList.add(lastParentsIndexes.removeClass);
+                        }
                         // todo Убрать последнюю пару parent-index если movedCnt > 0
                         if (dynamicAdaptItem.movedCnt > 1) {
                             dynamicAdaptItem.parentsIndexesPop();
