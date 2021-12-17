@@ -55,7 +55,7 @@ DynamicAdapt.prototype.init = function () {
 		const оbjectsFilter = Array.prototype.filter.call(this.оbjects, function (item) {
 			return item.breakpoint === mediaBreakpoint;
 		});
-		matchMedia.addListener(function () {
+		matchMedia.addEventListener("change", function () {
 			_this.mediaHandler(matchMedia, оbjectsFilter);
 		});
 		this.mediaHandler(matchMedia, оbjectsFilter);
