@@ -141,4 +141,3 @@ class DynamicAdapt {
   }
 }
 
-//           return b.place - a.place; return b.place - a.place; заменить на return 0 чтобы соблюдался порядок при возвращении
