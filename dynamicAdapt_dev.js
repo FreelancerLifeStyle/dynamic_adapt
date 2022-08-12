@@ -17,7 +17,7 @@ class DynamicAdapt {
       const оbject = {};
       оbject.element = node;
       оbject.parent = node.parentNode;
-      оbject.destination = document.querySelector(`${dataArray[0].trim()}`);
+      оbject.destination = node.closest(`${dataArray[0].trim()}`);
       оbject.breakpoint = dataArray[1] ? dataArray[1].trim() : '767';
       оbject.place = dataArray[2] ? dataArray[2].trim() : 'last';
       оbject.index = this.indexInParent(оbject.parent, оbject.element);
