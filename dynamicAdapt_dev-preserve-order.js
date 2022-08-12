@@ -17,7 +17,7 @@ class DynamicAdapt {
       const оbject = {};
       оbject.element = node;
       оbject.parent = node.parentNode;
-      оbject.destination = node.closest(`${dataArray[0].trim()}`);
+      оbject.destination = document.querySelector(`${dataArray[0].trim()}`);
       оbject.breakpoint = dataArray[1] ? dataArray[1].trim() : '767';
       оbject.place = dataArray[2] ? dataArray[2].trim() : 'last';
       оbject.index = this.indexInParent(оbject.parent, оbject.element);
@@ -57,7 +57,7 @@ class DynamicAdapt {
   mediaHandler(matchMedia, оbjects) {
     if (matchMedia.matches) {
       оbjects.forEach((оbject) => {
-        оbject.index = this.indexInParent(оbject.parent, оbject.element); 
+        // оbject.index = this.indexInParent(оbject.parent, оbject.element);
         this.moveTo(оbject.place, оbject.element, оbject.destination);
       });
     } else {
@@ -116,7 +116,7 @@ class DynamicAdapt {
           if (a.place === 'last' || b.place === 'first') {
             return 1;
           }
-          return a.place - b.place;
+          return 0;
         }
         return a.breakpoint - b.breakpoint;
       });
@@ -132,7 +132,7 @@ class DynamicAdapt {
           if (a.place === 'last' || b.place === 'first') {
             return -1;
           }
-          return b.place - a.place;
+          return 0;
         }
         return b.breakpoint - a.breakpoint;
       });
@@ -140,4 +140,3 @@ class DynamicAdapt {
     }
   }
 }
-
