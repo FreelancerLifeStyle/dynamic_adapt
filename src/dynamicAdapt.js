@@ -55,7 +55,7 @@ export function useDynamicAdapt(type = 'max') {
           parent,
           element,
           to,
-          breakpoint: attrParts[1] ?? '768',
+          breakpoint: attrParts[1] ?? '767',
           order: order !== undefined ? (isNumber(order) ? Number(order) : order) : 'last',
           index: -1,
         })
