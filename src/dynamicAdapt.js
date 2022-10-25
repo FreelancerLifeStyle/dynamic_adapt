@@ -43,19 +43,17 @@ export function useDynamicAdapt(type = 'max') {
 
     elements.forEach((element) => {
       const attr = element.getAttribute(attrName)
-      const attrParts = attr.split(',').map((val) => val.trim())
+      const [toSelector, breakpoint, order] = attr.split(',').map((val) => val.trim())
 
-      const toSelector = attrParts[0]
       const parent = element.parentElement
       const to = document.querySelector(toSelector)
-      const order = attrParts[2]
 
       if (to) {
         result.push({
           parent,
           element,
           to,
-          breakpoint: attrParts[1] ?? '767',
+          breakpoint: breakpoint ?? '767',
           order: order !== undefined ? (isNumber(order) ? Number(order) : order) : 'last',
           index: -1,
         })
