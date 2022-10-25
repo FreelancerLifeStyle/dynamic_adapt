@@ -45,12 +45,11 @@ export function useDynamicAdapt(type = 'max') {
       const attr = element.getAttribute(attrName)
       const [toSelector, breakpoint, order] = attr.split(',').map((val) => val.trim())
 
-      const parent = element.parentElement
       const to = document.querySelector(toSelector)
 
       if (to) {
         result.push({
-          parent,
+          parent: element.parentElement,
           element,
           to,
           breakpoint: breakpoint ?? '767',
