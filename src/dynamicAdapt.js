@@ -2,7 +2,7 @@
  * @typedef {Object} dNode
  * @property {HTMLElement} parent
  * @property {HTMLElement} element
- * @property {?HTMLElement} to
+ * @property {HTMLElement} to
  * @property {string} breakpoint
  * @property {string} order
  * @property {number} index
